@@ -55,24 +55,25 @@ h1 {
   filter: drop-shadow(0 0 2em #3178c6aa);
 }
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+h1 {
+  font-size: 5.25rem; /* text-4xl */
+  font-weight: 800;   /* font-extrabold */
+  margin-bottom: 1rem; /* mb-4 */
+  color: #60a5fa;     /* text-blue-400 */
+  text-shadow: 0 2px 8px rgba(59, 130, 246, 0.4); /* drop-shadow-lg */
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+  padding: 0.5rem 1.5rem;      /* px-6 py-2 */
+  background-color: #6e1487;   /* bg-blue-600 */
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;       /* rounded-lg */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15); /* shadow */
+  font-size: 3rem;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background 0.2s;
 }
 button:hover {
   border-color: #646cff;
@@ -80,6 +81,10 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+#button {
+  pointer-events: auto !important;  /* Enable button interactions */
 }
 
 @media (prefers-color-scheme: light) {

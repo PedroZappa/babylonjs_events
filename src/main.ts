@@ -193,8 +193,6 @@ class App {
       { captureOnPointerEnter: false, isCanvasOverlay: false, fitStrategy: FitStrategy.NONE });
     const div = document.createElement("div");
     div.innerHTML = this._mainMenuHTML
-    // div.style.width = "200px";
-    // div.style.height = "200px";
     div.style.textAlign = 'center';
 
     htmlMeshDiv.setContent(div, 4, 2);
