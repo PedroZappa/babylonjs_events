@@ -18,8 +18,8 @@ import {
   Quaternion,
   Animation,
   ActionManager,
-  ExecuteCodeAction, 
-	SetValueAction,
+  ExecuteCodeAction,
+  SetValueAction,
   PointerEventTypes,
 } from "@babylonjs/core";
 import {
@@ -163,6 +163,7 @@ class App {
     this._canvas.style.width = "100%";
     this._canvas.style.height = "100%";
     this._canvas.id = "gameCanvas";
+    this._canvas.style.cursor = "default"; // Set default cursor
     document.body.appendChild(this._canvas);
 
     return this._canvas;
@@ -190,10 +191,22 @@ class App {
 
     // Main Menu
     const htmlMeshDiv = new HtmlMesh(this._scene, "htmlMeshDiv",
-      { captureOnPointerEnter: false, isCanvasOverlay: false, fitStrategy: FitStrategy.NONE });
+      { captureOnPointerEnter: true, isCanvasOverlay: false, fitStrategy: FitStrategy.NONE });
     const div = document.createElement("div");
     div.innerHTML = this._mainMenuHTML
     div.style.textAlign = 'center';
+
+    // Add event listeners to HTML elements
+    const button = div.querySelector("#button");
+    if (button) {
+      button.addEventListener("click", () => {
+        console.log("Button clicked!");
+        // Interact with your scene
+        this._toggleCameraTarget();
+        // Or manipulate meshes
+        this._ball.position.y += 0.5;
+      });
+    }
 
     htmlMeshDiv.setContent(div, 4, 2);
 
@@ -306,22 +319,13 @@ class App {
       }
     });
 
-    this._scene.onPointerObservable.add((pointerInfo) => {
-      if (pointerInfo.type === PointerEventTypes.POINTERPICK) {
-        const pick = this._scene.pick(this._scene.pointerX, this._scene.pointerY);
-        if (pick?.pickedMesh?.metadata?.isButton) {
-          this._toggleCameraTarget();
-        }
-      }
-    });
-
     this._mainMenuPlane.actionManager = new ActionManager(this._scene);
     this._mainMenuPlane.actionManager.registerAction(
       new ExecuteCodeAction(
         ActionManager.OnPickTrigger,
         (evt) => {
           const pick = this._scene.pick(this._scene.pointerX, this._scene.pointerY);
-          console.log(pick);
+          // console.log(pick);
           if (pick?.pickedMesh?.metadata?.isButton) {
             this._toggleCameraTarget();
           }
@@ -336,33 +340,14 @@ class App {
       : this._pongTarget;
     this.animationCamera(this._currentTarget);
 
-		if (this._currentTarget === this._pongTarget) {
-			this._currentTarget = this._pongTarget;
-			this._camera.rotationQuaternion = this._pongTarget;
-		} else {
-			this._currentTarget = this._mainMenuTarget;
-			this._camera.rotationQuaternion = this._mainMenuTarget;
-		}
+    if (this._currentTarget === this._pongTarget) {
+      this._currentTarget = this._pongTarget;
+      this._camera.rotationQuaternion = this._pongTarget;
+    } else {
+      this._currentTarget = this._mainMenuTarget;
+      this._camera.rotationQuaternion = this._mainMenuTarget;
+    }
   }
 
 };
 new App()
-
-
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
